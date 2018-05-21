@@ -6,13 +6,16 @@ import smtplib
 import csv
 import passwords
 
-k = genfromtxt('example.csv',delimiter=',',names=True)
+k = genfromtxt('example2.csv',delimiter=',',names=True)
 data=k['reading']
+l= genfromtxt('example.csv',delimiter=',',names=True)
+data2=l['reading']
 data=data[~numpy.isnan(data)]
 print(data)
 listobj=data.tolist()
 print(listobj)
 plt.plot(data)
+plt.plot(data2)
 plt.title('Plot')
 plt.ylabel('Y axis')
 plt.xlabel('X axis')
@@ -20,7 +23,7 @@ plt.show()
 crossed=0
 item=0
 strf=''
-with open('example.csv') as csvfile:
+with open('example2.csv') as csvfile:
     readCSV = csv.reader(csvfile, delimiter=',')
     dates = []
     for row in readCSV:
@@ -29,7 +32,7 @@ with open('example.csv') as csvfile:
 print(dates)
 for i in listobj:
     item+=1
-    if i>1100:
+    if i>40:
         print('Value Crossed')
         crossed+=1
         strf+=str(crossed)+'.'+'\t'+str(i)+'\t'+str(dates[item-1])+'\n'
@@ -61,7 +64,7 @@ try:
     print('User Authenticated...........\n')
     print('\n\n This is the body of the email')
     print(body)
-    server.sendmail(sent_from, to, email_text)
+    #server.sendmail(sent_from, to, email_text)
     server.close()
     print('Email sent!')
 except:
