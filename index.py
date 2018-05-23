@@ -6,12 +6,14 @@ import smtplib
 import csv
 import passwords
 
-k = genfromtxt('example2.csv',delimiter=',',names=True)
+k = genfromtxt('example.csv',delimiter=',',names=True)
 data=k['reading']
 l= genfromtxt('example.csv',delimiter=',',names=True)
 data2=l['reading']
 data=data[~numpy.isnan(data)]
 print(data)
+hm=numpy.reshape(data,(24,31),order='F')
+print(hm)
 listobj=data.tolist()
 print(listobj)
 plt.plot(data)
@@ -19,6 +21,8 @@ plt.plot(data2)
 plt.title('Plot')
 plt.ylabel('Y axis')
 plt.xlabel('X axis')
+plt.show()
+plt.imshow(hm,interpolation='nearest',cmap='jet')
 plt.show()
 crossed=0
 item=0
@@ -32,7 +36,7 @@ with open('example2.csv') as csvfile:
 print(dates)
 for i in listobj:
     item+=1
-    if i>40:
+    if i>1200:
         print('Value Crossed')
         crossed+=1
         strf+=str(crossed)+'.'+'\t'+str(i)+'\t'+str(dates[item-1])+'\n'
