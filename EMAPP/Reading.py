@@ -59,9 +59,19 @@ while i<ref_max:
     print(i)
 print('The Number of Indices are: ',len(indices))
 k=ref_min.date()
+consump=[]
 for i in range(len(indices)-1):
     r_min=float(values[indices[i]])
     r_up=float(values[indices[i+1]])
     consumption=r_up-r_min
+    consump.append(consumption)
     print('The Consumption on ',k,' is : ',consumption)
     k+= timedelta(days=1)
+rate=float(input('Enter the Rate per KWH consumed for Cost Calculation: '))
+k=ref_min.date()
+cost=[]
+for i in consump:
+    r=float(i)*rate
+    print('The Cose of Electricity for ',k,' is :',r)
+    cost.append(r)
+    k+=timedelta(days=1)
