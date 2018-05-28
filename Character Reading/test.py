@@ -5,8 +5,11 @@ from resize import Resize
 pytesseract.pytesseract.tesseract_cmd = 'C:/Program Files (x86)/Tesseract-OCR/tesseract'
 ############################################################
 #Image Resizing Section
+print('Reszing Image Please Wait........')
 Resize().rsize(Image.open('pic.jpg')).save('pic1.jpg')
 image = Image.open('pic1.jpg')
+"""for i in range(5):
+    image=image.filter(ImageFilter.SMOOTH_MORE)"""
 ############################################################
 """print (pytesseract.image_to_string(Image.open('pic.jpg')))
 inverted_image = ImageOps.invert(image)
@@ -26,7 +29,8 @@ print('Picture with Sharpening and Black and white filter')
 print (pytesseract.image_to_string(Image.open('pic_sharpen_bw.jpg')))"""
 ##############################################################
 contrast=ImageEnhance.Contrast(image)
-contrast.enhance(2).save('pic_contrast.png')
+for i in range(10):
+    contrast.enhance(4).save('pic_contrast.png')
 print('Image with contrast enhancement')
 print (pytesseract.image_to_string(Image.open('pic_contrast.PNG')))
 ##############################################################
@@ -39,5 +43,12 @@ sharpen.enhance(2).save('pic_sharpen_enhance.png')
 print (pytesseract.image_to_string(Image.open('pic_sharpen_enhance.PNG')))
 ##############################################################
 inverted_image = ImageOps.invert(Image.open('pic_sharpen_enhance.png'))
-ImageEnhance.Sharpness(inverted_image).enhance(2).save('pic_sharpen_enhance_sharpen.png')
+for i in range(10):
+    ImageEnhance.Sharpness(inverted_image).enhance(2).save('pic_sharpen_enhance_sharpen.png')
+    k=Image.open('pic.jpg')
+    k=ImageOps.grayscale(k)
+    k=ImageOps.invert(k)
+    k=ImageEnhance.Contrast(k).enhance(3)
+    k.save('pic_sharpen_enhance_sharpen.png')
+    ImageEnhance.Sharpness(inverted_image).enhance(2).save('pic_sharpen_enhance_sharpen.png')
 print(pytesseract.image_to_string(Image.open('pic_sharpen_enhance_sharpen.png')))

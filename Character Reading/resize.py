@@ -7,7 +7,7 @@ class Resize:
         except:
             im =image
         x,y=im.size
-        while x<720 or y<720:
+        while x<300 or y<300:
             x*=1.15
             y*=1.15
         im=im.resize((int(x),int(y)), PIL.Image.ANTIALIAS)
