@@ -7,9 +7,9 @@ pytesseract.pytesseract.tesseract_cmd = 'C:/Program Files (x86)/Tesseract-OCR/te
 #Image Resizing Section
 print('Reszing Image Please Wait........')
 Resize().rsize(Image.open('pic.jpg')).save('pic1.jpg')
-image = Image.open('pic1.jpg')
-"""for i in range(5):
-    image=image.filter(ImageFilter.SMOOTH_MORE)"""
+image = Image.open('pic1.jpg').convert("L")
+for i in range(5):
+    image=image.filter(ImageFilter.SMOOTH_MORE)
 ############################################################
 """print (pytesseract.image_to_string(Image.open('pic.jpg')))
 inverted_image = ImageOps.invert(image)
@@ -28,18 +28,21 @@ im.save('pic_sharpen_bw.jpg')
 print('Picture with Sharpening and Black and white filter')
 print (pytesseract.image_to_string(Image.open('pic_sharpen_bw.jpg')))"""
 ##############################################################
+print("\n====================OUTPUT====================\n")
 contrast=ImageEnhance.Contrast(image)
 for i in range(10):
     contrast.enhance(4).save('pic_contrast.png')
-print('Image with contrast enhancement')
+print('Stage 1:')
 print (pytesseract.image_to_string(Image.open('pic_contrast.PNG')))
 ##############################################################
 color=ImageEnhance.Color(Image.open('pic_contrast.png'))
 color.enhance(0).save('pic_color_bw.png')
+print('Stage 2:')
 print (pytesseract.image_to_string(Image.open('pic_color_bw.PNG')))
 ##############################################################
 sharpen=ImageEnhance.Sharpness(Image.open('pic_color_bw.png'))
 sharpen.enhance(2).save('pic_sharpen_enhance.png')
+print('Stage 3:')
 print (pytesseract.image_to_string(Image.open('pic_sharpen_enhance.PNG')))
 ##############################################################
 inverted_image = ImageOps.invert(Image.open('pic_sharpen_enhance.png'))
@@ -51,4 +54,5 @@ for i in range(10):
     k=ImageEnhance.Contrast(k).enhance(3)
     k.save('pic_sharpen_enhance_sharpen.png')
     ImageEnhance.Sharpness(inverted_image).enhance(2).save('pic_sharpen_enhance_sharpen.png')
+print('Stage 4:')
 print(pytesseract.image_to_string(Image.open('pic_sharpen_enhance_sharpen.png')))
