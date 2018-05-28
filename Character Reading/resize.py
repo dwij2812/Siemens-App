@@ -7,8 +7,8 @@ class Resize:
         except:
             im =image
         x,y=im.size
-        while x<500 or y<500:
-            x*=2
-            y*=2
-        im=im.resize((int(x),int(y)), PIL.Image.BICUBIC)
+        while x<720 or y<720:
+            x*=1.15
+            y*=1.15
+        im=im.resize((int(x),int(y)), PIL.Image.ANTIALIAS)
         return im #returning resized image object
