@@ -3,6 +3,7 @@ from resize import Resize
 import pytesseract
 from resize import Resize
 pytesseract.pytesseract.tesseract_cmd = 'C:/Program Files (x86)/Tesseract-OCR/tesseract'
+import csv
 ############################################################
 #Image Resizing Section
 print('Reszing Image Please Wait........')
@@ -33,17 +34,20 @@ contrast=ImageEnhance.Contrast(image)
 for i in range(10):
     contrast.enhance(4).save('pic_contrast.png')
 print('Stage 1:')
-print (pytesseract.image_to_string(Image.open('pic_contrast.PNG')))
+s1=pytesseract.image_to_string(Image.open('pic_contrast.PNG'))
+print ('<',s1,'>')
 ##############################################################
 color=ImageEnhance.Color(Image.open('pic_contrast.png'))
 color.enhance(0).save('pic_color_bw.png')
 print('Stage 2:')
-print (pytesseract.image_to_string(Image.open('pic_color_bw.PNG')))
+s2=pytesseract.image_to_string(Image.open('pic_color_bw.PNG'))
+print ('<',s2,'>')
 ##############################################################
 sharpen=ImageEnhance.Sharpness(Image.open('pic_color_bw.png'))
 sharpen.enhance(2).save('pic_sharpen_enhance.png')
 print('Stage 3:')
-print (pytesseract.image_to_string(Image.open('pic_sharpen_enhance.PNG')))
+s3=pytesseract.image_to_string(Image.open('pic_sharpen_enhance.PNG'))
+print ('<',s3,'>')
 ##############################################################
 inverted_image = ImageOps.invert(Image.open('pic_sharpen_enhance.png'))
 for i in range(10):
@@ -55,4 +59,41 @@ for i in range(10):
     k.save('pic_sharpen_enhance_sharpen.png')
     ImageEnhance.Sharpness(inverted_image).enhance(2).save('pic_sharpen_enhance_sharpen.png')
 print('Stage 4:')
-print(pytesseract.image_to_string(Image.open('pic_sharpen_enhance_sharpen.png')))
+s4=pytesseract.image_to_string(Image.open('pic_sharpen_enhance_sharpen.png'))
+print('<',s4,'>')
+##############################################################
+def output(k):
+    print('Saving the Result as .csv')
+    res = []
+    res.append(k)
+    csvfile = "output.csv"
+    print(res)
+
+    #Assuming res is a flat list
+    with open(csvfile, "w") as output:
+        writer = csv.writer(output, lineterminator='\n')
+        for val in res:
+            writer.writerow([val])
+##############################################################
+print('\n====================Final Result====================\n')
+if(s1==s2):
+    if s1:
+        print(s1)
+        output(s1)
+        exit()
+if(s2==s3):
+    if s2:
+        print(s2)
+        output(s2)
+        exit()
+if(s3==s4):
+    if s3:
+        print(s3)
+        output(s3)
+        exit()
+if s4:
+    print(s4)
+    output(s4)
+    exit()
+if not s4:
+    print('Please Upload a better Image')
