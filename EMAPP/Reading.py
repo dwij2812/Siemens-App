@@ -13,7 +13,7 @@ def nearest(items, pivot):
 values=[]
 dates=[]
 combine=[]
-with open('test.csv', 'r') as csvFile:
+with open('test2.csv', 'r') as csvFile:
     reader = csv.reader(csvFile)
     for row in reader:
         values.append(row[1])
@@ -65,13 +65,13 @@ for i in range(len(indices)-1):
     r_up=float(values[indices[i+1]])
     consumption=r_up-r_min
     consump.append(consumption)
-    print('The Consumption on ',k,' is : ',consumption)
+    print('The Consumption on ',k.strftime('%d-%m-%Y'),' is : ',consumption)
     k+= timedelta(days=1)
 rate=float(input('Enter the Rate per KWH consumed for Cost Calculation: '))
 k=ref_min.date()
 cost=[]
 for i in consump:
     r=float(i)*rate
-    print('The Cose of Electricity for ',k,' is :',r)
+    print('The Cost of Electricity for ',k.strftime('%d-%m-%Y'),' is :',r)
     cost.append(r)
     k+=timedelta(days=1)
