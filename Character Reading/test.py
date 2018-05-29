@@ -34,19 +34,28 @@ contrast=ImageEnhance.Contrast(image)
 for i in range(10):
     contrast.enhance(4).save('pic_contrast.png')
 print('Stage 1:')
-s1=pytesseract.image_to_string(Image.open('pic_contrast.PNG'))
+try:
+    s1=pytesseract.image_to_string(Image.open('pic_contrast.PNG'))
+except UnicodeError:
+    print('The Input text consists a character which is not supported by the current CODEC installed please upload a better Image')
 print ('<',s1,'>')
 ##############################################################
 color=ImageEnhance.Color(Image.open('pic_contrast.png'))
 color.enhance(0).save('pic_color_bw.png')
 print('Stage 2:')
-s2=pytesseract.image_to_string(Image.open('pic_color_bw.PNG'))
+try:
+    s2=pytesseract.image_to_string(Image.open('pic_color_bw.PNG'))
+except UnicodeError:
+    print('The Input text consists a character which is not supported by the current CODEC installed please upload a better Image')
 print ('<',s2,'>')
 ##############################################################
 sharpen=ImageEnhance.Sharpness(Image.open('pic_color_bw.png'))
 sharpen.enhance(2).save('pic_sharpen_enhance.png')
 print('Stage 3:')
-s3=pytesseract.image_to_string(Image.open('pic_sharpen_enhance.PNG'))
+try:
+    s3=pytesseract.image_to_string(Image.open('pic_sharpen_enhance.PNG'))
+except UnicodeError:
+    print('The Input text consists a character which is not supported by the current CODEC installed please upload a better Image')
 print ('<',s3,'>')
 ##############################################################
 inverted_image = ImageOps.invert(Image.open('pic_sharpen_enhance.png'))
@@ -59,14 +68,18 @@ for i in range(10):
     k.save('pic_sharpen_enhance_sharpen.png')
     ImageEnhance.Sharpness(inverted_image).enhance(2).save('pic_sharpen_enhance_sharpen.png')
 print('Stage 4:')
-s4=pytesseract.image_to_string(Image.open('pic_sharpen_enhance_sharpen.png'))
+try:
+    s4=pytesseract.image_to_string(Image.open('pic_sharpen_enhance_sharpen.png'))
+except UnicodeError:
+    print('The Input text consists a character which is not supported by the current CODEC installed please upload a better Image')
 print('<',s4,'>')
 ##############################################################
 def output(k):
-    print('Saving the Result as .csv')
+    print('Saving the Result as .csv....................')
     res = []
     res.append(k)
     csvfile = "output.csv"
+    print('Writing to the File Output.csv the following Result:')
     print(res)
 
     #Assuming res is a flat list
@@ -74,6 +87,7 @@ def output(k):
         writer = csv.writer(output, lineterminator='\n')
         for val in res:
             writer.writerow([val])
+    print("EXIT, YOUR FILE IS READY please check the output.csv in the current directory")
 ##############################################################
 print('\n====================Final Result====================\n')
 if(s1==s2):
