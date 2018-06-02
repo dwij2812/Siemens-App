@@ -5,6 +5,7 @@ import csv
 import pandas as pd
 from operator import itemgetter
 from datetime import*
+from openpyxl import load_workbook,Workbook
 #######################################################################
 def nearest(items, pivot):
     return min(items, key=lambda x: abs(x - pivot))
@@ -171,3 +172,23 @@ with open('output.csv', 'w') as csvFile:
         writer = csv.writer(csvFile,lineterminator='\n')
         writer.writerow(row)
 csvFile.close()
+print('CSV FILE Generated as Output.csv')
+###########################################################################
+wb=load_workbook('Book1.xlsx')
+ws1=wb.get_sheet_by_name('Sheet1')
+
+# shs is list
+ws1['G2']=cust
+ws1['G3']='3, National Hwy 9, Premnagar, '
+ws1['G4']='Ashok Nagar, Pune, Maharashtra 411016'
+ws1['F6']=ref_min.date()
+ws1['M6']=subtract_one_month(ref_max.date())+timedelta(days=1)
+column=9
+row=5
+for r in write:
+    
+    for i in r:
+        ws1.cell(row,column).value=i
+        row+=1
+    column+=1
+wb.save('Book1.xlsx')
