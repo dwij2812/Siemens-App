@@ -6,6 +6,9 @@ import pandas as pd
 from operator import itemgetter
 from datetime import*
 from openpyxl import load_workbook,Workbook
+from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font
+import openpyxl
+from win32com import client
 #######################################################################
 def nearest(items, pivot):
     return min(items, key=lambda x: abs(x - pivot))
@@ -123,6 +126,7 @@ print('\n====================Final Output====================\n')
 k=ref_min.date()
 date_list=[]
 write=[]
+write2=[]
 cust=input('Please Enter The Customer Name:  ')
 row=['Customer Name: ',cust]
 write.append(row)
@@ -144,20 +148,27 @@ row=['Reading Date','Previous Reading','Present Reading','Consumption','Cost']
 write.append(row)
 for i in range(len(indices)-1):
     row=[]
+    row2=[]
     print('--------------------------------------')
     print('Date:\t\t',k)
     row.append(k)
+    row2.append(k)
     date_list.append(k)
     k = add_one_month(k)
     print('Lower Reading:\t',lower[i])
     row.append(lower[i])
+    row2.append(lower[i])
     print('Upper Reading:\t',upper[i])
     row.append(upper[i])
+    row2.append(upper[i])
     print('Consumption:\t',consump[i])
     row.append(consump[i])
+    row2.append(consump[i])
     print('Cost:\t\t',cost[i])
     row.append(cost[i])
+    row2.append(cost[i])
     write.append(row)
+    write2.append(row2)
 plt.plot(date_list,consump)
 plt.show()
 plt.savefig('graph.png')
@@ -176,19 +187,60 @@ print('CSV FILE Generated as Output.csv')
 ###########################################################################
 wb=load_workbook('Book1.xlsx')
 ws1=wb.get_sheet_by_name('Sheet1')
-
 # shs is list
-ws1['G2']=cust
-ws1['G3']='3, National Hwy 9, Premnagar, '
-ws1['G4']='Ashok Nagar, Pune, Maharashtra 411016'
-ws1['F6']=ref_min.date()
-ws1['M6']=subtract_one_month(ref_max.date())+timedelta(days=1)
-column=9
-row=5
-for r in write:
-    
+ws1['B2']=cust
+ws1['B3']='3, National Hwy 9, Premnagar, '
+ws1['B4']='Ashok Nagar, Pune, Maharashtra 411016'
+ws1['B6']=ref_min.date()
+ws1['E6']=subtract_one_month(ref_max.date())+timedelta(days=1)
+row=9
+column=1
+for r in write2:
+    column=1
     for i in r:
         ws1.cell(row,column).value=i
-        row+=1
-    column+=1
+        column+=1
+    row+=1
+"""
+row+=1
+column=1
+ws1.cell(row,column).value='Total Consumption: '
+ws1.cell(row,column).font=Font(bold=True)
+column+=1
+ws1.cell(row,column).value=sum(consump)
+column-=1
+row+=1
+ws1.cell(row,column).value='Total Cost: '
+ws1.cell(row,column).font=Font(bold=True)
+column+=1
+ws1.cell(row,column).value=sum(cost)
+column-=1"""
+thick_border_right=Border(right=Side(style='thick'))
+ws1['E2'].border=thick_border_right
+ws1['E3'].border=thick_border_right
+ws1['E4'].border=thick_border_right
+thick_border = Border(left=Side(style='thick'), right=Side(style='thick'), top=Side(style='thick'), bottom=Side(style='thick'))
+ws1['A15']='Total Consumption'
+ws1['A15'].font=Font(bold=True)
+ws1['A15'].border=thick_border
+ws1['B15'].border=thick_border
+ws1['C15'].border=thick_border
+ws1['D15'].border=thick_border
+ws1['A16']='Total Cost'
+ws1['A16'].font=Font(bold=True)
+ws1['A16'].border=thick_border
+ws1['B16'].border=thick_border
+ws1['C16'].border=thick_border
+ws1['D16'].border=thick_border
+ws1['E15']=sum(consump)
+ws1['E16']=sum(cost)
+img = openpyxl.drawing.image.Image('logo.jpg')
+img.anchor='A1'
+ws1.add_image(img)
 wb.save('Book1.xlsx')
+#############################################################################
+xlApp = client.Dispatch("Excel.Application")
+books = xlApp.Workbooks.Open('E:\Internship\Siemens\EMAPP\Book1.xlsx')
+ws = books.Worksheets[0]
+ws.Visible = 1
+ws.ExportAsFixedFormat(0, 'E:\Internship\Siemens\EMAPP\trial.pdf')
