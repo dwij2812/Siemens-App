@@ -1,2 +1,2 @@
-numpy == 1.14.3
+numpy ==1.14.4
 pytesseract == 0.2.2
