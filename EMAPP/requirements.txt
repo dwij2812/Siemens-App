@@ -1,4 +1,4 @@
 matplotlib ==3.0.2
 numpy ==1.16.0
 pandas ==0.24.0
-openpyxl ==2.5.12
+openpyxl ==2.5.14
