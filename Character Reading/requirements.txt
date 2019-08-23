@@ -1,2 +1,2 @@
 numpy ==1.16.4
-pytesseract ==0.2.9
+pytesseract ==0.3.0
